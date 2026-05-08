@@ -118,7 +118,6 @@ const forgotPassword = async (req, res) => {
         const validUser = await User.findOne({ where: { email } });
 
         if (!validUser) {
-            // return res.status(404).json({ success: false, message: "Email does not Found" });
             return res.status(200).json({ success: true, message: "If this email exists, a reset link has been sent" });
         };
 
@@ -218,7 +217,7 @@ const handleOtpSend = async (req, res) => {
         const mailOptions = {
             from: process.env.FROM_EMAIL,
             to: email,
-            subject: "OTP to Reset password",
+            subject: "Reset password",
             text: `Your OTP for password reset is: <b>${otp}</b>.
             Do not share your OTP with anyone else. Validity 5 Mins`
         };
@@ -253,7 +252,7 @@ const handleVerifyOtpAndResetPassword = async (req, res) => {
         };
 
         if (newPassword !== confirmPassword) {
-            return res.status(400).json({ success: true, message: "Passwords do not match" });
+            return res.status(400).json({ success: true, message: "password should match the confirm Password" });
         };
 
         const user = res.locals.user;
