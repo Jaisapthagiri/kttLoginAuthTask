@@ -7,9 +7,9 @@ const User = sequelize.define('User', {
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
     password: { type: DataTypes.STRING, allowNull: false },
     phone: { type: DataTypes.STRING, allowNull: false, unique: true },
-    resetToken: { type: DataTypes.STRING, allowNull: true }
-    // resetOtp: { type: DataTypes.STRING, allowNull: false },
-    // otpExpiry: { type: DataTypes.DATE, allowNull: false }
+    resetToken: { type: DataTypes.STRING, allowNull: true },
+    resetOtp: { type: DataTypes.STRING, allowNull: true },
+    otpExpiry: { type: DataTypes.DATE, allowNull: true }
 });
 
 module.exports = User;

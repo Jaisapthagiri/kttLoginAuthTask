@@ -34,7 +34,6 @@ const authUser = async (req, res, next) => {
 
 const authResetPassword = async (req, res, next) => {
     try {
-        // const { token } = req.body || {};
         const { token } = req.query || {};
 
         if (!token) {
@@ -57,4 +56,34 @@ const authResetPassword = async (req, res, next) => {
     };
 };
 
-module.exports = { authUser, authResetPassword };
+const authResetPasswordUsingOTP = async (req, res, next) => {
+    try {
+        let { otp } = req.body || {};
+
+        if (!otp) {
+            return res.status(400).json({ success: false, message: "OTP is Missing" });
+        };
+
+        otp = String(otp).trim();
+
+        const hashedOTP = crypto.createHash('sha256').update(otp).digest('hex');
+
+        const user = await User.findOne({ where: { resetOtp: hashedOTP } });
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: "Invalid OTP or Expired" });
+        };
+
+        if (!user.otpExpiry || user.otpExpiry < new Date()) {
+            return res.status(400).json({ success: false, message: "OTP expired" });
+        };
+
+        res.locals.user = user;
+        next();
+
+    } catch (error) {
+        return res.status(500).json({ success: false, error: error.message });
+    };
+};
+
+module.exports = { authUser, authResetPassword, authResetPasswordUsingOTP };
