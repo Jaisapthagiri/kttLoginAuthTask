@@ -61,9 +61,7 @@ const registerUser = async (req, res) => {
 
         const user = await User.create({ firstName, lastName, email, password: hashedPassword, phone });
 
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "12h" });
-
-        return res.status(201).json({ success: true, message: "User Created successfully", token });
+        return res.status(201).json({ success: true, message: "User Created successfully" });
 
     } catch (error) {
         return res.status(500).json({ success: false, error: error.message });
@@ -96,7 +94,7 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ success: false, message: "Email or password does not match" });
         };
 
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "12h" });
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "10h" });
 
         return res.status(200).json({ success: true, message: "Logged in successfully", token, user: { id: user.id, firstName: user.firstName, email: user.email } });
 
