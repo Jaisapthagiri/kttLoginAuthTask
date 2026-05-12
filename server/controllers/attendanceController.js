@@ -46,7 +46,7 @@ const checkeInOut = async (req, res) => {
         const attendanceRecord = await Attendance.findOne({
             where: {
                 userId: id,
-                attendanceDate: todayDate
+                date: todayDate
             }
         });
 
@@ -59,7 +59,7 @@ const checkeInOut = async (req, res) => {
 
             await Attendance.create({
                 userId: id,
-                attendanceDate: todayDate,
+                date: todayDate,
                 checkIn: currentTime,
                 present: 0,
                 totalWorkingHours: 0,
